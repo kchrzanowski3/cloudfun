@@ -11,8 +11,11 @@ on:  # Define the events that trigger the workflow
 jobs:  # Define the jobs that make up the workflow
   
   checkcredentials:  # Name of the job
-    runs-on: flemay/musketeers  # Specify the runner environment
+    runs-on: ubuntu-latest  # Specify the runner environment
 
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
       - run: echo "Hello, world";ls  # testing the command
+      - run: apt-get install docker-compose-plugin; docker compose version
+
+      
