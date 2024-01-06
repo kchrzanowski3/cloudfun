@@ -10,7 +10,7 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  check credentials:  # Name of the job
+  checkcredentials:  # Name of the job
     runs-on: ubuntu-latest  # Specify the runner environment
 
     steps:  # Define the steps within the job
