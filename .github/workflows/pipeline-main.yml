@@ -16,6 +16,6 @@ jobs:  # Define the jobs that make up the workflow
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
       - run: echo "Hello, world";ls  # testing the command
-      - run: sudo apt-get install docker-compose-plugin; docker compose version
+      - run: docker --version
 
       
