@@ -1,0 +1,13 @@
+# file name: docker-compose.yml
+version: "3.7"
+services:
+  terraform-utils:
+    image: hashicorp/terraform:latest
+    environment:
+      - AWS_SDK_LOAD_CONFIG=1
+      - TF_TOKEN_app_terraform_io=$TF_TOKEN_app_terraform_io
+    entrypoint: ""
+    volumes:
+      - .:/work
+      - ~/.aws:/root/.aws
+    working_dir: /work
