@@ -9,3 +9,5 @@ locals {
     }
   workspace = local.env["default"]
 }
+
+variable "my_env_var" {}

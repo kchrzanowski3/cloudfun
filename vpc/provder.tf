@@ -1,7 +1,7 @@
 ## Provider
 provider "aws" {
   #profile = local.workspace["aws_profile"]
-  #region  = local.workspace["aws_region"]
+  region  = "us-east-1"
 }
 
 terraform {
