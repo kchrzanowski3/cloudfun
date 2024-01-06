@@ -12,8 +12,11 @@ jobs:  # Define the jobs that make up the workflow
   
   ApplyTerraform:  # Name of the job
     runs-on: ubuntu-latest  # Specify the runner environment
+    env:
+      TF_TOKEN_app_terraform_io: ${{ secrets.MY_VARIABLE }}
 
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
       - run: echo "Hello, world";ls  # testing the command
       - run: TERRAFORM_ROOT_MODULE=vpc make plan
+        
