@@ -15,5 +15,4 @@ jobs:  # Define the jobs that make up the workflow
 
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
-      - run: |
-          echo "Hello, world!";ls;ls cloudfun  # Example of running a simple command
+      - run: echo "Hello, world!";ls;ls cloudfun  # testing the command
