@@ -2,7 +2,6 @@ resource "aws_iam_openid_connect_provider" "default" {
   url = "https://token.actions.githubusercontent.com"
 
   client_id_list = [
-    "https://github.com/kchrzanowski3/cloudfun",
     "sts.amazonaws.com"
   ]
 
@@ -13,28 +12,26 @@ resource "aws_iam_openid_connect_provider" "default" {
 resource "aws_iam_role" "github_action_oidc_role" {
   name = "github_action_oidc_role"
 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Principal": {
-                "Federated": "arn:aws:iam::975050024165:oidc-provider/token.actions.githubusercontent.com"
-            },
-            "Action": "sts:AssumeRoleWithWebIdentity",
-            "Condition": {
-                "StringLike": {
-                    "token.actions.githubusercontent.com:sub": "repo:kchrzanowski3/cloudfun:*"
-                },
-                "StringEquals": {
-                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
-                }
-            }
+  assume_role_policy = jsonencode({
+  Version = "2012-10-17"
+  Statement = [
+    {
+      Effect = "Allow"
+      Principal = {
+        Federated = aws_iam_openid_connect_provider.default.arn
+      }
+      Action = "sts:AssumeRoleWithWebIdentity"
+      Condition = {
+        StringLike = {
+          "token.actions.githubusercontent.com:sub": "repo:" + local.repo.org+ "/" +local.repo.project +":*"
         }
-    ]
-}
-EOF
+        StringEquals = {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        }
+      }
+    }
+  ]
+})
 }
 
 #aws policy says what actions can be performed for the OIDC github action that assumes the role above
