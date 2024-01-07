@@ -3,6 +3,7 @@ resource "aws_iam_openid_connect_provider" "default" {
 
   client_id_list = [
     "https://github.com/kchrzanowski3/cloudfun",
+    "sts.amazonaws.com"
   ]
 
   thumbprint_list = ["cf23df2207d99a74fbe169e3eba035e633b65d94"]
