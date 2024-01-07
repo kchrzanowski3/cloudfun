@@ -16,10 +16,24 @@ jobs:  # Define the jobs that make up the workflow
       TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    permissions:
+      id-token: write # This is required for requesting the JWT
+      contents: read  # This is required for actions/checkout
+      
 
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
       - run: echo "Hello, world";ls  # testing the command
       - run: env
+
+      #login with oidc aws credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role
+          aws-region: us-east-1
+
+
+
       - run: TERRAFORM_ROOT_MODULE=vpc make plan
         
