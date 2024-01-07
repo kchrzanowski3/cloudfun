@@ -32,7 +32,7 @@ jobs:  # Define the jobs that make up the workflow
         with:
           role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #arn of the OIDC identity provider in aws
           aws-region: us-east-1
-      - run: cd vpc; terraform init
+      - run: cd vpc; terraform init; terraform apply -auto-approve
 
 
       #- run: TERRAFORM_ROOT_MODULE=vpc make plan
