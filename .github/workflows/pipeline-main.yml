@@ -20,7 +20,7 @@ jobs:  # Define the jobs that make up the workflow
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
       
-
+  
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
       - run: echo "Hello, world";ls  # testing the command
@@ -32,8 +32,8 @@ jobs:  # Define the jobs that make up the workflow
         with:
           role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #arn of the OIDC identity provider in aws
           aws-region: us-east-1
+      - run: cd vpc; terraform init
 
 
-
-      - run: TERRAFORM_ROOT_MODULE=vpc make plan
+      #- run: TERRAFORM_ROOT_MODULE=vpc make plan
         
