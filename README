@@ -14,4 +14,4 @@ make apply-vpc
 
 To destroy everything
 
-make destroy
+make destroy-all
