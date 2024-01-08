@@ -30,7 +30,7 @@ jobs:  # Define the jobs that make up the workflow
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #arn of the OIDC identity provider in aws
+          role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #replace with arn of the created OIDC identity provider in aws
           aws-region: us-east-1
       - run: cd vpc; terraform init; terraform apply -auto-approve
 

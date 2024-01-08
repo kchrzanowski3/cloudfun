@@ -1,3 +1,14 @@
-This is where info goes
+Setup
+In order for the github action pipeline to authenticate with AWS, an OIDC provider must be created. Run the following command locally to create the oidc provider. 
 
-push test
+make create-oidc
+
+Once the OIDC provider is created, update the pipeline aws authentication step(s) with the resulting Identity Provider ARN value. You can remove the oidc provider at any time by running: 
+
+make destroy-oidc
+
+To run the actual terraform infrastructure, the format is: TERRAFORM_ROOT_MODULE= $( folder-path ) make apply
+Example: 
+
+TERRAFORM_ROOT_MODULE=vpc make apply
+
