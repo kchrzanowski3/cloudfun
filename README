@@ -10,5 +10,8 @@ make destroy-oidc
 To run the actual terraform infrastructure, the format is: TERRAFORM_ROOT_MODULE= $( folder-path ) make apply
 Example: 
 
-TERRAFORM_ROOT_MODULE=vpc make apply
+make apply-vpc
 
+To destroy everything
+
+make destroy

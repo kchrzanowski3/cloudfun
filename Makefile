@@ -1,6 +1,7 @@
-## Initialise OIDC provider
+## OIDC infrastructure
 init-oidc:
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform init'
+.PHONY: init-oidc
 
 create-oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform apply -auto-approve'
@@ -8,9 +9,23 @@ create-oidc: init-oidc
 
 destroy-oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform destroy -auto-destroy'
-.PHONY: create-oidc
+.PHONY: destroy-oidc
+
+##VPC
+init-vpc:
+	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform init'
+.PHONY: init-vpc
+
+create-vpc: init-vpc
+	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform apply -auto-approve'
+.PHONY: create-vpc
+
+destroy-vpc: init-vpc
+	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform destroy -auto-destroy'
+.PHONY: destroy-vpc
 
 
+##used during development, create any other folder
 ## Initialise
 init:
 	docker-compose run --rm terraform-utils sh -c 'cd $(TERRAFORM_ROOT_MODULE); terraform init'
@@ -30,3 +45,9 @@ apply: init
 destroy: init
 	docker-compose run --rm terraform-utils sh -c 'cd ${TERRAFORM_ROOT_MODULE}; terraform destroy -auto-approve'
 .PHONY: destroy
+
+
+## Destroy everything
+destroy-all: destroy-vpc destroy-oidc
+	echo "finished destroying everyting"
+.PHONY: destroy-all
