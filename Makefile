@@ -21,7 +21,7 @@ create-vpc: init-vpc
 .PHONY: create-vpc
 
 destroy-vpc: init-vpc
-	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform destroy -auto-destroy'
+	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform destroy -auto-approve'
 .PHONY: destroy-vpc
 
 
