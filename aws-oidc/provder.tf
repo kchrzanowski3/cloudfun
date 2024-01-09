@@ -10,7 +10,7 @@ terraform {
 
     workspaces {
         project = "cloudfun"
-        name = "default-tf-workspace"
+        name = "oidc-workspace"
     }
   }
 }
