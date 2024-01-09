@@ -7,6 +7,16 @@ packer {
   }
 }
 
+variable "ami_prefix" {
+  type    = string
+  default = "linux-aws"
+}
+
+locals {
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+}
+
+
 source "amazon-ebs" "ubuntu" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
@@ -34,24 +44,9 @@ build {
       "FOO=hello world",
     ]
     inline = [
-      "echo Installing Redis",
-      "sleep 30",
       "sudo apt-get update",
-      "sudo apt-get install -y redis-server",
       "echo \"FOO is $FOO\" > example.txt",
     ]
   }
-
-  provisioner "shell" {
-    inline = ["echo This provisioner runs last"]
-  }
 }
 
-variable "ami_prefix" {
-  type    = string
-  default = "learn-packer-linux-aws-redis"
-}
-
-locals {
-  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
-}

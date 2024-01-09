@@ -10,14 +10,13 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  ApplyTerraform:  # Name of the job
+  BuildAMI:  # Name of the job
     runs-on: ubuntu-latest  # Specify the runner environment
-    env:
-      TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN_app_terraform_io }}
-      
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
+    env:
+        PACKER_FILE1: "packer-images/aws-ubuntu.pkr.hcl"
       
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
@@ -28,7 +27,16 @@ jobs:  # Define the jobs that make up the workflow
         with:
           role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #replace with arn of the created OIDC identity provider in aws
           aws-region: us-east-1
+        
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: "latest"
 
-      - run: cd vpc; terraform init; terraform apply -auto-approve; cd ..;pwd
+      - name: Run `packer`
+        id: run
+        run: "packer init ${{ env.PACKER_FILE1 }};packer validate ${{ env.PACKER_FILE1 }};packer build ${{ env.PACKER_FILE1 }}"
+
 
         
