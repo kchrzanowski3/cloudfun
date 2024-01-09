@@ -47,6 +47,11 @@ destroy: init
 .PHONY: destroy
 
 
+## Make everything
+build: create-oidc create-vpc
+	echo "finished building everyting"
+.PHONY: build
+
 ## Destroy everything
 destroy-all: destroy-vpc destroy-oidc
 	echo "finished destroying everyting"
