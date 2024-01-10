@@ -6,11 +6,13 @@ on:  # Define the events that trigger the workflow
       - main
     paths: 
       - infra/**
+      - .github/workflows/infrastructure-pipeline.yml
   pull_request:  # Run on pull request events
     branches:
       - main
     paths: 
       - infra/**
+      - .github/workflows/infrastructure-pipeline.yml
 
 jobs:  # Define the jobs that make up the workflow
   
@@ -33,6 +35,6 @@ jobs:  # Define the jobs that make up the workflow
           role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #replace with arn of the created OIDC identity provider in aws
           aws-region: us-east-1
 
-      - run: cd vpc; terraform init; terraform apply -auto-approve; cd ..;pwd
+      - run: cd infra; terraform init; terraform apply -auto-approve; 
 
         

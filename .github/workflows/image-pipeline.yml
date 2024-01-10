@@ -6,11 +6,13 @@ on:  # Define the events that trigger the workflow
       - main
     paths: 
       - packer-images/**
+      - .github/workflows/image-pipeline.yml
   pull_request:  # Run on pull request events
     branches:
       - main
     paths: 
       - packer-images/**
+      - .github/workflows/image-pipeline.yml
 
 jobs:  # Define the jobs that make up the workflow
   
