@@ -4,9 +4,13 @@ on:  # Define the events that trigger the workflow
   push:  # Run on push events
     branches:  # Limit to specific branches (optional)
       - main
+    paths: 
+      - infra/**
   pull_request:  # Run on pull request events
     branches:
       - main
+    paths: 
+      - infra/**
 
 jobs:  # Define the jobs that make up the workflow
   
