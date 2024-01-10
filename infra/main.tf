@@ -9,13 +9,23 @@ resource "aws_vpc" "hellovpc" {
   }
 }
 
-#stand up an ubuntu image created in packer
-resource "aws_instance" "web" {
-  ami           = "ami-00c9800eb7c3cbe61"
+#filter the ami images to result in the ubuntu image created by packer
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu-packer-cloudfun-*"]
+  }
+}
+
+#stand up an ubuntu ec2 image created in packer
+resource "aws_instance" "ubuntu-packer" {
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
 
   tags = {
-    Name = "HelloWorld"
+    Name = "workstations"
   }
 }
 

@@ -9,7 +9,7 @@ packer {
 
 variable "ami_prefix" {
   type    = string
-  default = "ubuntu-packer"
+  default = "ubuntu-packer-cloudfun"
 }
 
 locals {

@@ -5,7 +5,7 @@ init-oidc:
 
 oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform apply -auto-approve'
-.PHONY: create-oidc
+.PHONY: init-oidc
 
 destroy-oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform destroy -auto-destroy'
@@ -48,7 +48,7 @@ destroy: init
 
 
 ## Make everything
-build: create-oidc create-infra
+build: oidc infra
 	echo "finished building everyting"
 .PHONY: build
 

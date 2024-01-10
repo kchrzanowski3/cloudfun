@@ -40,7 +40,7 @@ jobs:  # Define the jobs that make up the workflow
         with:
           version: "latest"
 
-      - name: Run `packer`
+      - name: Build ubuntu image
         id: run
         run: "packer init ${{ env.PACKER_FILE1 }};packer validate ${{ env.PACKER_FILE1 }};packer build ${{ env.PACKER_FILE1 }}"
 
