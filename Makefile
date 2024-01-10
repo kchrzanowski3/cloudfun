@@ -3,7 +3,7 @@ init-oidc:
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform init'
 .PHONY: init-oidc
 
-create-oidc: init-oidc
+oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform apply -auto-approve'
 .PHONY: create-oidc
 
@@ -11,18 +11,18 @@ destroy-oidc: init-oidc
 	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform destroy -auto-destroy'
 .PHONY: destroy-oidc
 
-##VPC
-init-vpc:
-	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform init'
-.PHONY: init-vpc
+##infra
+init-infra:
+	docker-compose run --rm terraform-utils sh -c 'cd infra; terraform init'
+.PHONY: init-infra
 
-create-vpc: init-vpc
-	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform apply -auto-approve'
-.PHONY: create-vpc
+infra: init-infra
+	docker-compose run --rm terraform-utils sh -c 'cd infra; terraform apply -auto-approve'
+.PHONY: infra
 
-destroy-vpc: init-vpc
-	docker-compose run --rm terraform-utils sh -c 'cd vpc; terraform destroy -auto-approve'
-.PHONY: destroy-vpc
+destroy-infra: init-infra
+	docker-compose run --rm terraform-utils sh -c 'cd infra; terraform destroy -auto-approve'
+.PHONY: destroy-infra
 
 
 ##used during development, create any other folder
@@ -48,11 +48,11 @@ destroy: init
 
 
 ## Make everything
-build: create-oidc create-vpc
+build: create-oidc create-infra
 	echo "finished building everyting"
 .PHONY: build
 
 ## Destroy everything
-destroy-all: destroy-vpc destroy-oidc
+destroy-all: destroy-infra destroy-oidc
 	echo "finished destroying everyting"
 .PHONY: destroy-all

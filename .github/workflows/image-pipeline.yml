@@ -1,4 +1,4 @@
-name: Main Merge  # Name of the workflow
+name: Image Build Pipeline  # Name of the workflow
 
 on:  # Define the events that trigger the workflow
   push:  # Run on push events
