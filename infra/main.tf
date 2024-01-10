@@ -25,7 +25,7 @@ resource "aws_instance" "ubuntu-packer" {
   instance_type = "t3.micro"
 
   tags = {
-    Name = "workstations"
+    Name = "ubuntu from packer"
   }
 }
 
