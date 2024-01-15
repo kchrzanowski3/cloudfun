@@ -16,6 +16,10 @@ init-infra:
 	docker-compose run --rm terraform-utils sh -c 'cd infra; terraform init'
 .PHONY: init-infra
 
+infra-plan: init-oidc
+	docker-compose run --rm terraform-utils sh -c 'cd aws-oidc; terraform plan'
+.PHONY: plan-oidc
+
 infra: init-infra
 	docker-compose run --rm terraform-utils sh -c 'cd infra; terraform apply -auto-approve'
 .PHONY: infra
@@ -51,6 +55,8 @@ destroy: init
 build: oidc infra
 	echo "finished building everyting"
 .PHONY: build
+
+
 
 ## Destroy everything
 destroy-all: destroy-infra destroy-oidc

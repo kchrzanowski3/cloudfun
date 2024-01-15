@@ -16,13 +16,13 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  BuildAMI:  # Name of the job
+  BuildUbuntuAMI:  # Name of the job
     runs-on: ubuntu-latest  # Specify the runner environment
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     env:
-        PACKER_FILE1: "packer-images/aws-ubuntu.pkr.hcl"
+        PACKER_FILE: "packer-images/aws-ubuntu.pkr.hcl"
       
     steps:  # Define the steps within the job
       - uses: actions/checkout@v3  # Checkout the repository code
@@ -42,7 +42,8 @@ jobs:  # Define the jobs that make up the workflow
 
       - name: Build ubuntu image
         id: run
-        run: "packer init ${{ env.PACKER_FILE1 }};packer validate ${{ env.PACKER_FILE1 }};packer build ${{ env.PACKER_FILE1 }}"
+        run: "packer init ${{ env.PACKER_FILE }};packer validate ${{ env.PACKER_FILE }};packer build ${{ env.PACKER_FILE }}"
 
 
-        
+
+  
