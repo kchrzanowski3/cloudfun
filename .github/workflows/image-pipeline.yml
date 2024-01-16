@@ -16,34 +16,25 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  FindImagesToBuild:
+  job1:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write # This is required for requesting the oidc JWT
-      contents: read  # This is required for oidc actions/checkout
     outputs:
-      matrix: ${{ steps.set_matrix.outputs.matrix }}
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
-      - id: file_changes
-        uses: trilom/file-changes-action@v1.2.3
-
-      - id: set_matrix
-        run: echo "matrix=[\"packer-images/aws-DC-server.pkr.hcl\", \"packer-images/aws-ubuntu.pkr.hcl\" ]" >> $GITHUB_OUTPUT
-
-
-  BuildAMI:  # Name of the job
-    needs: FindImagesToBuild
+      - id: set-matrix
+        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+  
+  job2:  # Name of the job
+    needs: job1
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
-      matrix: ${{  fromJson(needs.FindImagesToBuild.outputs.matrix)  }}
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
-    env:
-        PACKER_FILE: ${{matrix.value}}
-
+    
     steps:  # Define the steps within the job
       - run: echo "current file is - ${{ matrix.value }}"
 
