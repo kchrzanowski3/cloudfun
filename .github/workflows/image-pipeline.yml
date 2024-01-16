@@ -22,7 +22,7 @@ jobs:  # Define the jobs that make up the workflow
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
       - id: getfilenames
-        run: git diff --name-only --diff-filter=ACMRT ${{ github.event.pull_request.base.sha }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
+        run: git diff --name-only --diff-filter=ACMRT ${{ github.event.before.base.sha }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
 
 
       - id: matrix
