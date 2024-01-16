@@ -31,8 +31,16 @@ jobs:  # Define the jobs that make up the workflow
         with: 
           format: "json"
 
+      - run: echo "value=[]" >> $GITHUB_OUTPUT
+
       - id: jsonfile
-        run: echo "value=${{ steps.files.outputs.added_modified }}" >> $GITHUB_OUTPUT
+        run: |
+          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
+          for added_modified_file in "${added_modified_files[@]}"; do
+            echo "\"${added_modified_file}\", " >> $GITHUB_OUTPUT
+          done
+      
+          - run: echo "]" >> $GITHUB_OUTPUT
 
       - run: echo "${{ steps.jsonfile.outputs.value }}"
 
