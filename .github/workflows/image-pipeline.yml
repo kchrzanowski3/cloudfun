@@ -16,27 +16,30 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  job1:
+  setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      matrix: ${{ steps.matrix.outputs.value }}
     steps:
-      - uses: actions/checkout@v3  # Checkout the repository code
-
-      - id: set-matrix
-        run: echo "matrix=[\"../packer-images/aws-DC-server.pkr.hcl\",\"../packer-images/aws-ubuntu-server.pkr.hcl\"]" >> $GITHUB_OUTPUT
-  
+      - id: matrix
+        run: |
+          echo "value=[\"a\", \"b\", \"c\"]" >> $GITHUB_OUTPUT
+      - run: |
+          echo "${{ steps.matrix.outputs.value }}"
+      
   job2:  # Name of the job
-    needs: job1
+    needs: setup
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
-      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
+      matrix:
+        value: ${{fromJSON(needs.setup.outputs.matrix)}}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     
     steps:  # Define the steps within the job
-      - run: echo "current file is - ${{ matrix.value }}"
+      - run: |
+          echo "${{ matrix.value }}"
 
       - uses: actions/checkout@v3  # Checkout the repository code
 
