@@ -34,6 +34,9 @@ jobs:  # Define the jobs that make up the workflow
       - id: jsonfiles
         run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
 
+      - run: echo "${{ steps.jsonfiles.outputs.value }}"
+
+
 
   BuildAMI:  # Name of the job
     needs: FindImagesToBuild
