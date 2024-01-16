@@ -35,7 +35,6 @@ jobs:  # Define the jobs that make up the workflow
 
       - id: jsonfile
         run: |
-          mapfile -d ',' -t added_modified_files < <(printf '%s,' '${{ steps.files.outputs.added_modified }}')
           for added_modified_file in "${added_modified_files[@]}"; do
             echo "\"${added_modified_file}\", " >> $GITHUB_OUTPUT
           done
