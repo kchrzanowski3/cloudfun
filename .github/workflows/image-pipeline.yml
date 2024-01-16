@@ -25,7 +25,7 @@ jobs:  # Define the jobs that make up the workflow
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
-        
+      - run: git diff --name-only HEAD~1 HEAD -- ../packer-images/*.pkr.hcl
       #save the changed images files to a variable
       - run: changed_files=$(git diff --name-only HEAD~1 HEAD -- ../packer-images/*.pkr.hcl)
         #save the file to the matrix output
