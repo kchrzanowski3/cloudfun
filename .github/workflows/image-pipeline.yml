@@ -30,7 +30,7 @@ jobs:  # Define the jobs that make up the workflow
         uses: trilom/file-changes-action@v1.2.3
 
       - id: set_matrix
-        run: echo "matrix=${{ steps.file_changes.outputs.files_modified }}" >> $GITHUB_OUTPUT
+        run: echo "matrix=[\"../packer-images/aws-DC-server.pkr.hcl\", \"../packer-images/aws-ubuntu.pkr.hcl\" ]" >> $GITHUB_OUTPUT
 
 
   BuildAMI:  # Name of the job
