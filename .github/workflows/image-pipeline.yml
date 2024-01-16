@@ -30,7 +30,7 @@ jobs:  # Define the jobs that make up the workflow
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'json'
-      - run: echo "${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
+      - run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
 
 
   BuildAMI:  # Name of the job
