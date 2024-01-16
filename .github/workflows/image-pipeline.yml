@@ -28,8 +28,6 @@ jobs:  # Define the jobs that make up the workflow
 
       - id: files
         uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'json'
 
       - id: jsonfiles
         run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
