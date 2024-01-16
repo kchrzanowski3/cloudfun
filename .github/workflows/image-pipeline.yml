@@ -34,7 +34,7 @@ jobs:  # Define the jobs that make up the workflow
 
 
   BuildAMI:  # Name of the job
-    needs: [FindImagesToBuild]
+    needs: FindImagesToBuild
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
       matrix:
@@ -43,7 +43,7 @@ jobs:  # Define the jobs that make up the workflow
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     env:
-        PACKER_FILE: ${{ matrix.value }}
+        PACKER_FILE: ${{fromJSON(needs.FindImagesToBuild.outputs.matrix)}}
 
     steps:  # Define the steps within the job
       - run: echo "current file is - ${{ matrix.value }}"
@@ -65,6 +65,6 @@ jobs:  # Define the jobs that make up the workflow
 
       - name: Build ubuntu image
         id: run
-        run: "packer init ${{ env.PACKER_FILE }};packer validate ${{ env.PACKER_FILE }};packer build ${{ env.PACKER_FILE }}"
-
+        #run: "packer init ${{ env.PACKER_FILE }};packer validate ${{ env.PACKER_FILE }};packer build ${{ env.PACKER_FILE }}"
+        run: ls
   
