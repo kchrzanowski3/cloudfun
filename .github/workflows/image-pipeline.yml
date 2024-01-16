@@ -29,7 +29,7 @@ jobs:  # Define the jobs that make up the workflow
       - id: file_changes
         uses: trilom/file-changes-action@v1.2.3
 
-      - run: echo "matrix=${{ steps.file_changes.outputs.files_modified }}"
+      - run: echo "matrix=${{ steps.file_changes.outputs.files_modified }}" >> $GITHUB_OUTPUT
 
 
   BuildAMI:  # Name of the job
