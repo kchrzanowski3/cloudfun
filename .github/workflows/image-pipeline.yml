@@ -23,7 +23,7 @@ jobs:  # Define the jobs that make up the workflow
     steps:
       - id: matrix
         run: |
-          echo "value=[\"a\", \"b\", \"c\"]" >> $GITHUB_OUTPUT
+          echo "value=[\"packer-images/aws-DC-server.pkr.hcl\", \"b\", \"c\"]" >> $GITHUB_OUTPUT
       - run: |
           echo "${{ steps.matrix.outputs.value }}"
       
