@@ -28,11 +28,13 @@ jobs:  # Define the jobs that make up the workflow
 
       - id: files
         uses: jitterbit/get-changed-files@v1
+        with: 
+          format: "json"
 
-      - id: jsonfiles
-        run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
+      - id: jsonfile
+        run: echo "value=${{ steps.files.outputs.added_modified }}" >> $GITHUB_OUTPUT
 
-      - run: echo "${{ steps.jsonfiles.outputs.value }}"
+      - run: echo "${{ steps.jsonfile.outputs.value }}"
 
 
 
@@ -41,12 +43,12 @@ jobs:  # Define the jobs that make up the workflow
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
       matrix:
-        value: ${{needs.FindImagesToBuild.outputs.matrix}}
+        value: ${{  fromJson(needs.FindImagesToBuild.outputs.matrix)  }}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     env:
-        PACKER_FILE: ${{needs.FindImagesToBuild.outputs.matrix}}
+        PACKER_FILE: ${{matrix.value}}
 
     steps:  # Define the steps within the job
       - run: echo "current file is - ${{ matrix.value }}"
