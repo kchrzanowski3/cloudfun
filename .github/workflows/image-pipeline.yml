@@ -37,8 +37,7 @@ jobs:  # Define the jobs that make up the workflow
     needs: FindImagesToBuild
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
-      matrix:
-        value: ${{  fromJson(needs.FindImagesToBuild.outputs.matrix)  }}
+      matrix: ${{  fromJson(needs.FindImagesToBuild.outputs.matrix)  }}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
