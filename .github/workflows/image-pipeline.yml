@@ -22,7 +22,7 @@ jobs:  # Define the jobs that make up the workflow
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     outputs:
-      matrix: ${{ steps.files.outputs.all }}
+      matrix: ${{ steps.jsonfiles.outputs.value }}
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
@@ -30,8 +30,9 @@ jobs:  # Define the jobs that make up the workflow
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'json'
-      - run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
-      - run: echo "${{ outputs.matrix }}"
+
+      - id: jsonfiles
+        run: echo "value=${{ steps.files.outputs.all }}" >> $GITHUB_OUTPUT
 
 
   BuildAMI:  # Name of the job
