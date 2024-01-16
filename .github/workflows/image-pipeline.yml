@@ -22,14 +22,15 @@ jobs:  # Define the jobs that make up the workflow
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     outputs:
-      matrix: ${{ steps.file_changes.outputs.value }}
+      matrix: ${{ steps.set_matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v3  # Checkout the repository code
 
       - id: file_changes
         uses: trilom/file-changes-action@v1.2.3
 
-      - run: echo "matrix={ ${{ steps.file_changes.outputs.files_modified }} }" >> $GITHUB_OUTPUT
+      - id: set_matrix
+        run: echo "matrix=${{ steps.file_changes.outputs.files_modified }}" >> $GITHUB_OUTPUT
 
 
   BuildAMI:  # Name of the job
