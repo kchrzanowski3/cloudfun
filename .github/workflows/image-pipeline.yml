@@ -16,15 +16,38 @@ on:  # Define the events that trigger the workflow
 
 jobs:  # Define the jobs that make up the workflow
   
-  BuildUbuntuAMI:  # Name of the job
+  FindImagesToBuild:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write # This is required for requesting the oidc JWT
+      contents: read  # This is required for oidc actions/checkout
+    outputs:
+      matrix: ${{ steps.matrix.outputs.value }}
+    steps:
+      - uses: actions/checkout@v3  # Checkout the repository code
+      - id: matrix
+        #save the changed images files to a variable
+        run: "changed_files=$(git diff --name-only HEAD~1 HEAD -- ../packer-images/*.pkr.hcl)"
+        #save the file to the matrix output
+      - run: echo "{\"value\":[\"$changed_files\"]}" >> $GITHUB_OUTPUT
+      - run: echo "${{ steps.matrix.outputs.value }}"
+
+
+  BuildAMI:  # Name of the job
+    needs: [FindImagesToBuild]
     runs-on: ubuntu-latest  # Specify the runner environment
+    strategy:
+      matrix:
+        value: ${{fromJSON(needs.FindImagesToBuild.outputs.matrix)}}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
     env:
-        PACKER_FILE: "packer-images/aws-ubuntu.pkr.hcl"
-      
+        PACKER_FILE: ${{ matrix.value }}
+
     steps:  # Define the steps within the job
+      - run: echo "current file is - ${{ matrix.value }}"
+
       - uses: actions/checkout@v3  # Checkout the repository code
 
       #login with oidc aws credentials
@@ -43,7 +66,5 @@ jobs:  # Define the jobs that make up the workflow
       - name: Build ubuntu image
         id: run
         run: "packer init ${{ env.PACKER_FILE }};packer validate ${{ env.PACKER_FILE }};packer build ${{ env.PACKER_FILE }}"
-
-
 
   
