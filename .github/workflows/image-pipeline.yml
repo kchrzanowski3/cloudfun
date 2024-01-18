@@ -61,6 +61,9 @@ jobs:  # Define the jobs that make up the workflow
         with:
           version: "latest"
 
+      - run: dir=dirname ${{ matrix.value }}; file=basename ${{ matrix.value }}
+      - run: cd $dir; ls; pwd
+
       - name: Build ubuntu image
         id: run
-        run: "cd | dirname ${{ matrix.value }};file=basename ${{ matrix.value }}; packer init $file;packer validate $file;packer build $file"
+        run: "ls;pwd; packer init $file; packer validate $file; packer build $file"
