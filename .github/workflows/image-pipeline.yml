@@ -21,8 +21,15 @@ jobs:  # Define the jobs that make up the workflow
     outputs:
       matrix: ${{ steps.matrix.outputs.value }}
     steps:
-      - id: getfilenames
-        run: git diff --name-only --diff-filter=ACMRT ${{ github.event.before.base.sha }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'
+
+      - run: echo "${{ steps.files.outputs.added_modified }}"|jq
+
+      #- id: getfilenames
+      #  run: git diff --name-only --diff-filter=ACMRT ${{ github.event. }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
 
 
       - id: matrix
