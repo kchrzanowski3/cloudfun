@@ -61,9 +61,14 @@ jobs:  # Define the jobs that make up the workflow
         with:
           version: "latest"
 
-      - run: dir=$(dirname ${{ matrix.value }}); file=$(basename ${{ matrix.value }})
-      - run: cd $dir; ls; pwd
+      - id: dirname
+        run: echo "dir=dirname $GITHUB_WORKSPACE/${{ matrix.value }}" >> $GITHUB_OUTPUT 
+      - id: filename
+        run: echo "file=basename ${{ matrix.value }}" >> $GITHUB_OUTPUT 
 
-      - name: Build ubuntu image
+      
+      - run: cd ${{ steps.dirname.outputs.dir }}; ls; pwd
+
+      - name: Build image
         id: run
-        run: "ls;pwd; packer init $file; packer validate $file; packer build $file"
+        run: "ls;pwd; packer init ${{ steps.filename.outputs.file }}; packer validate ${{ steps.filename.outputs.file }}; packer build ${{ steps.filename.outputs.file }}"
