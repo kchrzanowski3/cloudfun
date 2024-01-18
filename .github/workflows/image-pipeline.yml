@@ -61,7 +61,7 @@ jobs:  # Define the jobs that make up the workflow
         with:
           version: "latest"
 
-      - run: dir=dirname ${{ matrix.value }}; file=basename ${{ matrix.value }}
+      - run: dir=$(dirname ${{ matrix.value }}); file=$(basename ${{ matrix.value }})
       - run: cd $dir; ls; pwd
 
       - name: Build ubuntu image
