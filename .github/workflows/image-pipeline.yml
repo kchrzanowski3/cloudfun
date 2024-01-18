@@ -63,4 +63,4 @@ jobs:  # Define the jobs that make up the workflow
 
       - name: Build ubuntu image
         id: run
-        run: "packer init ${{ matrix.value }};packer validate ${{ matrix.value }};packer build ${{ matrix.value }}"
+        run: "cd | dirname ${{ matrix.value }};file=basename ${{ matrix.value }}; packer init $file;packer validate $file;packer build $file"
