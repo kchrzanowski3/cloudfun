@@ -5,14 +5,12 @@ on:  # Define the events that trigger the workflow
     branches:  # Limit to specific branches (optional)
       - main
     paths: 
-      - packer-images/**
-      - .github/workflows/image-pipeline.yml
+      - "**.pkr.hcl"
   pull_request:  # Run on pull request events
     branches:
       - main
     paths: 
-      - packer-images/**
-      - .github/workflows/image-pipeline.yml
+      - "**.pkr.hcl"
 
 jobs:  # Define the jobs that make up the workflow
   
@@ -65,6 +63,4 @@ jobs:  # Define the jobs that make up the workflow
 
       - name: Build ubuntu image
         id: run
-        #run: "packer init ${{ env.PACKER_FILE }};packer validate ${{ env.PACKER_FILE }};packer build ${{ env.PACKER_FILE }}"
-        run: ls
-  
+        run: "packer init ${{ matrix.value }};packer validate ${{ matrix.value }};packer build ${{ matrix.value }}"
