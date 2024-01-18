@@ -29,14 +29,11 @@ jobs:  # Define the jobs that make up the workflow
       #- id: getfilenames
       #  run: git diff --name-only --diff-filter=ACMRT ${{ github.event. }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
 
-
+      #converts the changed files into "real" json and filters them so only packer files are saved in the output
       - id: matrix
-        run: echo "value=${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/' | sed 's/,/","/'| sed 's/\]/\"]/' >> $GITHUB_OUTPUT 
-          #echo "value=[\"packer-images/aws-DC-server.pkr.hcl\", \"packer-images/aws-ubuntu.pkr.hcl\"]" >> $GITHUB_OUTPUT 
-      - run: |
-          echo "${{ steps.matrix.outputs.value }}"
+        run: echo "value=${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g'| sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]" >> $GITHUB_OUTPUT 
       
-  job2:  # Name of the job
+  BuildImage:  # Name of the job
     needs: setup
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
