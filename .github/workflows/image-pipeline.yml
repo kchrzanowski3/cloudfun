@@ -29,7 +29,7 @@ jobs:  # Define the jobs that make up the workflow
       #- id: getfilenames
       #  run: git diff --name-only --diff-filter=ACMRT ${{ github.event. }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
 
-      #converts the changed files into "real" json and filters them so only packer files are saved in the output
+      #converts the changed files into "real" json and filters them so only packer files are saved in the output 
       - id: matrix
         run: echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]" >> $GITHUB_OUTPUT 
       
