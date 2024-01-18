@@ -33,6 +33,8 @@ jobs:  # Define the jobs that make up the workflow
       - id: filterfiles
         run: temp=$(echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]")
       
+      - run: $temp
+
       - id: matrix
         run: echo "value=$temp" >> $GITHUB_OUTPUT 
 
