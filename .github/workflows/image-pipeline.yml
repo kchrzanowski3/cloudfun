@@ -26,7 +26,7 @@ jobs:  # Define the jobs that make up the workflow
         with:
           format: 'json'
 
-      - run: echo "${{ steps.files.outputs.added_modified }}"|tr '"' '\"' | jq .
+      - run: echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/' | sed 's/,/","/'| sed 's/\]/\"]/'
 
       #- id: getfilenames
       #  run: git diff --name-only --diff-filter=ACMRT ${{ github.event. }} ${{ github.sha }} | grep .pkr.hcl$ | xargs
