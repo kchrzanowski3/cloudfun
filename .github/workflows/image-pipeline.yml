@@ -31,14 +31,13 @@ jobs:  # Define the jobs that make up the workflow
 
       #converts the changed files into "real" json and filters them so only packer files are saved in the output 
       - id: matrix
-        run: echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]" >> $GITHUB_OUTPUT 
+        run: value=$(echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]") >> $GITHUB_OUTPUT 
       
   BuildImage:  # Name of the job
     needs: setup
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
-      matrix:
-        value: ${{fromJSON(needs.setup.outputs.matrix)}}
+      matrix: ${{fromJSON(needs.setup.outputs.matrix)}}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
