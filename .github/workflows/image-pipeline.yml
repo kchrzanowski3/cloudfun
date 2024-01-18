@@ -40,7 +40,8 @@ jobs:  # Define the jobs that make up the workflow
     needs: setup
     runs-on: ubuntu-latest  # Specify the runner environment
     strategy:
-      matrix: ${{fromJSON(needs.setup.outputs.matrix)}}
+      matrix: 
+        value: ${{fromJSON(needs.setup.outputs.matrix)}}
     permissions:
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
