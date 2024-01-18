@@ -31,7 +31,7 @@ jobs:  # Define the jobs that make up the workflow
 
       #converts the changed files into "real" json and filters them so only packer files are saved in the output
       - id: matrix
-        run: echo "value=${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]" >> $GITHUB_OUTPUT 
+        run: echo "${{ steps.files.outputs.added_modified }}" | sed 's/\[/\["/g' | sed 's/,/","/g' | sed 's/\]/\"]/g' | jq '.[] | select(endswith(".pkr.hcl"))'| tr '\n' ',' | sed 's/,$//'| echo "[$(cat -)]" >> $GITHUB_OUTPUT 
       
   BuildImage:  # Name of the job
     needs: setup
