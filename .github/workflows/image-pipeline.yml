@@ -60,13 +60,15 @@ jobs:  # Define the jobs that make up the workflow
         id: setup
         with:
           version: "latest"
-          
-      - run: export DIR="$(dirname ${{ matrix.value }})"
-      - run: export FILE="$(basename ${{ matrix.value }})"
       
+      - id: set_dir
+        run: echo "dir=$(dirname ${{ matrix.value }})" >> GITHUB_OUTBUT 
+
+      - id: set_file
+        run: echo "file=$(basename ${{ matrix.value }})" >> GITHUB_OUTBUT 
       
-      - run: cd $DIR; pwd;ls
+      - run: cd ${{ steps.set_dir.outputs.dir }}; pwd;ls
 
       - name: Build image
         id: run
-        run: "ls;pwd; packer init $FILE; packer validate $FILE; packer build $FILE"
+        run: "ls;pwd; packer init ${{ steps.set_file.outputs.file }}; packer validate ${{ steps.set_file.outputs.file }}; packer build ${{ steps.set_file.outputs.file }}"
