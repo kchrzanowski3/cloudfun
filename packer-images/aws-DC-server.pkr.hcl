@@ -5,7 +5,7 @@ packer {
       source = "github.com/hashicorp/amazon"
     }
   }
-} 
+}
 
 variable "region" {
   type    = string

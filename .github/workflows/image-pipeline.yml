@@ -62,15 +62,15 @@ jobs:  # Define the jobs that make up the workflow
           version: "latest"
 
       - id: dirname
-        run: echo "dir=dirname GITHUB_WORKSPACE/${{ matrix.value }}" >> $GITHUB_OUTPUT 
+        run: temp=$(dirname ${{ matrix.value }}); echo "$temp" >> $GITHUB_OUTPUT 
       - id: filename
-        run: echo "file=basename ${{ matrix.value }}" >> $GITHUB_OUTPUT 
+        run: temp=$(basename ${{ matrix.value }}); echo "$temp" >> $GITHUB_OUTPUT 
 
       - run: pwd;
 
       - run: ls;
       
-      - run: cd | ${{ steps.dirname.outputs.dir }}; ls; pwd
+      - run: cd ${{ steps.dirname.outputs.dir }}; ls; pwd
 
       - name: Build image
         id: run
