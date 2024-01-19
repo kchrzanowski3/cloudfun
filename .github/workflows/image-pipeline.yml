@@ -66,6 +66,9 @@ jobs:  # Define the jobs that make up the workflow
       - id: filename
         run: echo "file=basename ${{ matrix.value }}" >> $GITHUB_OUTPUT 
 
+      - run: pwd;
+
+      - run: ls;
       
       - run: cd | ${{ steps.dirname.outputs.dir }}; ls; pwd
 
