@@ -15,6 +15,25 @@ on:  # Define the events that trigger the workflow
       - .github/workflows/infrastructure-pipeline.yml
 
 jobs:  # Define the jobs that make up the workflow
+
+  Infra-SAST:  # Name of the job
+      runs-on: ubuntu-latest  # Specify the runner environment        
+      steps:  
+        - uses: actions/checkout@v3  # Checkout the repository code
+      
+        - name: Run Checkov action
+          id: checkov
+          uses: bridgecrewio/checkov-action@master
+          with:
+            directory: infra/
+            quiet: true # optional: display only failed checks
+            soft_fail: true # optional: do not return an error code if there are failed checks
+            framework: all # optional: run only on a specific infrastructure {cloudformation,terraform,kubernetes,all}
+            skip_framework: terraform # optional: skip a specific infrastructure {cloudformation,terraform,kubernetes,all}
+            output_format: sarif # optional: the output format, one of: cli, json, junitxml, github_failed_only, or sarif. Default: sarif
+            output_file_path: reports/results.sarif # folder and name of results file
+            output_bc_ids: true # optional: output Bridgecrew platform IDs instead of checkov IDs
+            download_external_modules: true # optional: download external terraform modules from public git repositories and terraform registry
   
   ApplyTerraform:  # Name of the job
     runs-on: ubuntu-latest  # Specify the runner environment
@@ -25,7 +44,7 @@ jobs:  # Define the jobs that make up the workflow
       id-token: write # This is required for requesting the oidc JWT
       contents: read  # This is required for oidc actions/checkout
       
-    steps:  # Define the steps within the job
+    steps:  
       - uses: actions/checkout@v3  # Checkout the repository code
 
       #login with oidc aws credentials
@@ -34,7 +53,8 @@ jobs:  # Define the jobs that make up the workflow
         with:
           role-to-assume: arn:aws:iam::975050024165:role/github_action_oidc_role #replace with arn of the created OIDC identity provider in aws
           aws-region: us-east-1
-
+      
+      #commenting out the build right now b/c I don't want it to run in the pipeline and spin up expensive infrastructure
       #- run: cd infra; terraform init; terraform apply -auto-approve; 
       - run: ls; 
 
