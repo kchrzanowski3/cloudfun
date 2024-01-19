@@ -67,8 +67,7 @@ jobs:  # Define the jobs that make up the workflow
       - id: set_file
         run: echo "file=$(basename ${{ matrix.value }})" >> $GITHUB_OUTPUT 
       
-      - run: cd ${{ steps.set_dir.outputs.dir }}; pwd;ls
-
       - name: Build image
         id: run
-        run: "ls;pwd; packer init ${{ steps.set_file.outputs.file }}; packer validate ${{ steps.set_file.outputs.file }}; packer build ${{ steps.set_file.outputs.file }}"
+        run: "cd ${{ steps.set_dir.outputs.dir }};; packer init ${{ steps.set_file.outputs.file }}; packer validate ${{ steps.set_file.outputs.file }}; packer build ${{ steps.set_file.outputs.file }}"
+        
