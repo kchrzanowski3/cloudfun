@@ -62,10 +62,10 @@ jobs:  # Define the jobs that make up the workflow
           version: "latest"
       
       - id: set_dir
-        run: echo "dir=$(dirname ${{ matrix.value }})" >> GITHUB_OUTPUT 
+        run: echo "dir=$(dirname ${{ matrix.value }})" >> $GITHUB_OUTPUT 
 
       - id: set_file
-        run: echo "file=$(basename ${{ matrix.value }})" >> GITHUB_OUTPUT 
+        run: echo "file=$(basename ${{ matrix.value }})" >> $GITHUB_OUTPUT 
       
       - run: cd ${{ steps.set_dir.outputs.dir }}; pwd;ls
 
