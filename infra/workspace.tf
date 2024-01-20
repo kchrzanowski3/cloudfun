@@ -12,7 +12,7 @@ resource "aws_workspaces_workspace" "example" {
   bundle_id    = data.aws_workspaces_bundle.value_windows_10.id
   user_name    = "Admin"
 
-  root_volume_encryption_enabled = false
+  root_volume_encryption_enabled = true
   user_volume_encryption_enabled = false
 
   workspace_properties {

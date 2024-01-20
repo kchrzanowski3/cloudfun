@@ -48,6 +48,12 @@ resource "aws_instance" "domain_manager" {
 
   # Optional: Add a key pair for SSH access
   key_name = aws_key_pair.windows-ad-manager-server.key_name  # Replace with your key pair name
+
+  #forces IMDSv2 and resolves medium vulnerability
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
   
   # Necessary for free tier eligibility
   tenancy = "default"

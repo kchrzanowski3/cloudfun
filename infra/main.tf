@@ -27,6 +27,12 @@ resource "aws_instance" "ec2tester" {
   instance_type = "t2.micro"  # Free tier eligible instance type
   subnet_id = aws_subnet.az1-pub.id
   associate_public_ip_address = true
+
+  #enables IMDSv2 to fix vulnerability
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
   
   # Necessary for free tier eligibility
   tenancy = "default"
