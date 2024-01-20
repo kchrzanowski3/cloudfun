@@ -33,6 +33,11 @@ resource "aws_instance" "ec2tester" {
     http_endpoint = "enabled"
     http_tokens   = "required"
   }
+
+  #fixes another vulnerability for 
+  root_block_device {
+    encrypted = true
+  }
   
   # Necessary for free tier eligibility
   tenancy = "default"
