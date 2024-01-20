@@ -54,6 +54,10 @@ resource "aws_instance" "domain_manager" {
     http_endpoint = "enabled"
     http_tokens   = "required"
   }
+
+  root_block_device {
+    encrypted     = true
+  }
   
   # Necessary for free tier eligibility
   tenancy = "default"

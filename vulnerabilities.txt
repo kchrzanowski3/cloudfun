@@ -1,10 +1,10 @@
 terraform scan results:
 
-Passed checks: 51, Failed checks: 15, Skipped checks: 0
+Passed checks: 54, Failed checks: 12, Skipped checks: 0
 
 Check: CKV_AWS_88: "EC2 instance should not have public IP."
 	FAILED for resource: aws_instance.domain_manager
-	File: /activedirectory.tf:41-64
+	File: /activedirectory.tf:41-68
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
 
 		41 | resource "aws_instance" "domain_manager" {
@@ -23,18 +23,22 @@ Check: CKV_AWS_88: "EC2 instance should not have public IP."
 		54 |     http_endpoint = "enabled"
 		55 |     http_tokens   = "required"
 		56 |   }
-		57 |   
-		58 |   # Necessary for free tier eligibility
-		59 |   tenancy = "default"
-		60 | 
-		61 |   tags = {
-		62 |     Name = "aws_instance.domain_manager"
-		63 |   }
-		64 | }
+		57 | 
+		58 |   root_block_device {
+		59 |     encrypted     = true
+		60 |   }
+		61 |   
+		62 |   # Necessary for free tier eligibility
+		63 |   tenancy = "default"
+		64 | 
+		65 |   tags = {
+		66 |     Name = "aws_instance.domain_manager"
+		67 |   }
+		68 | }
 
 Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
 	FAILED for resource: aws_instance.domain_manager
-	File: /activedirectory.tf:41-64
+	File: /activedirectory.tf:41-68
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
 
 		41 | resource "aws_instance" "domain_manager" {
@@ -53,18 +57,22 @@ Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instance
 		54 |     http_endpoint = "enabled"
 		55 |     http_tokens   = "required"
 		56 |   }
-		57 |   
-		58 |   # Necessary for free tier eligibility
-		59 |   tenancy = "default"
-		60 | 
-		61 |   tags = {
-		62 |     Name = "aws_instance.domain_manager"
-		63 |   }
-		64 | }
+		57 | 
+		58 |   root_block_device {
+		59 |     encrypted     = true
+		60 |   }
+		61 |   
+		62 |   # Necessary for free tier eligibility
+		63 |   tenancy = "default"
+		64 | 
+		65 |   tags = {
+		66 |     Name = "aws_instance.domain_manager"
+		67 |   }
+		68 | }
 
 Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
 	FAILED for resource: aws_instance.domain_manager
-	File: /activedirectory.tf:41-64
+	File: /activedirectory.tf:41-68
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
 
 		41 | resource "aws_instance" "domain_manager" {
@@ -83,100 +91,74 @@ Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
 		54 |     http_endpoint = "enabled"
 		55 |     http_tokens   = "required"
 		56 |   }
-		57 |   
-		58 |   # Necessary for free tier eligibility
-		59 |   tenancy = "default"
-		60 | 
-		61 |   tags = {
-		62 |     Name = "aws_instance.domain_manager"
-		63 |   }
-		64 | }
-
-Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
-	FAILED for resource: aws_instance.domain_manager
-	File: /activedirectory.tf:41-64
-	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
-
-		41 | resource "aws_instance" "domain_manager" {
-		42 |   ami           = data.aws_ami.ad-management-ami.id  # Free tier eligible microsoft windows server 22 (check for latest)
-		43 |   instance_type = "t2.micro"  # Free tier eligible instance type
-		44 |   subnet_id = aws_subnet.az1-pub.id
-		45 |   associate_public_ip_address = true
-		46 |   iam_instance_profile = aws_iam_instance_profile.ec2_ad_manager_profile.name
-		47 |   vpc_security_group_ids = [aws_security_group.allow_rdp.id]
-		48 | 
-		49 |   # Optional: Add a key pair for SSH access
-		50 |   key_name = aws_key_pair.windows-ad-manager-server.key_name  # Replace with your key pair name
-		51 | 
-		52 |   #forces IMDSv2 and resolves medium vulnerability
-		53 |   metadata_options {
-		54 |     http_endpoint = "enabled"
-		55 |     http_tokens   = "required"
-		56 |   }
-		57 |   
-		58 |   # Necessary for free tier eligibility
-		59 |   tenancy = "default"
-		60 | 
-		61 |   tags = {
-		62 |     Name = "aws_instance.domain_manager"
-		63 |   }
-		64 | }
+		57 | 
+		58 |   root_block_device {
+		59 |     encrypted     = true
+		60 |   }
+		61 |   
+		62 |   # Necessary for free tier eligibility
+		63 |   tenancy = "default"
+		64 | 
+		65 |   tags = {
+		66 |     Name = "aws_instance.domain_manager"
+		67 |   }
+		68 | }
 
 Check: CKV_AWS_23: "Ensure every security groups rule has a description"
 	FAILED for resource: aws_vpc_security_group_ingress_rule.allow_rdp
-	File: /activedirectory.tf:82-89
+	File: /activedirectory.tf:86-93
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
 
-		82 | resource "aws_vpc_security_group_ingress_rule" "allow_rdp" {
-		83 |   security_group_id = aws_security_group.allow_rdp.id
-		84 | 
-		85 |   cidr_ipv4   = "0.0.0.0/0"
-		86 |   from_port   = 3389
-		87 |   ip_protocol = "tcp"
-		88 |   to_port     = 3389
-		89 | }
+		86 | resource "aws_vpc_security_group_ingress_rule" "allow_rdp" {
+		87 |   security_group_id = aws_security_group.allow_rdp.id
+		88 | 
+		89 |   cidr_ipv4   = "0.0.0.0/0"
+		90 |   from_port   = 3389
+		91 |   ip_protocol = "tcp"
+		92 |   to_port     = 3389
+		93 | }
 
 Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
 	FAILED for resource: aws_vpc_security_group_ingress_rule.allow_rdp
-	File: /activedirectory.tf:82-89
+	File: /activedirectory.tf:86-93
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
 
-		82 | resource "aws_vpc_security_group_ingress_rule" "allow_rdp" {
-		83 |   security_group_id = aws_security_group.allow_rdp.id
-		84 | 
-		85 |   cidr_ipv4   = "0.0.0.0/0"
-		86 |   from_port   = 3389
-		87 |   ip_protocol = "tcp"
-		88 |   to_port     = 3389
-		89 | }
+		86 | resource "aws_vpc_security_group_ingress_rule" "allow_rdp" {
+		87 |   security_group_id = aws_security_group.allow_rdp.id
+		88 | 
+		89 |   cidr_ipv4   = "0.0.0.0/0"
+		90 |   from_port   = 3389
+		91 |   ip_protocol = "tcp"
+		92 |   to_port     = 3389
+		93 | }
 
 Check: CKV_AWS_23: "Ensure every security groups rule has a description"
 	FAILED for resource: aws_vpc_security_group_ingress_rule.vpc
-	File: /activedirectory.tf:91-96
+	File: /activedirectory.tf:95-100
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
 
-		91 | resource "aws_vpc_security_group_ingress_rule" "vpc" {
-		92 |   security_group_id = aws_security_group.allow_rdp.id
-		93 | 
-		94 |   cidr_ipv4   = aws_vpc.example.cidr_block
-		95 |   ip_protocol = -1
-		96 | }
+		95  | resource "aws_vpc_security_group_ingress_rule" "vpc" {
+		96  |   security_group_id = aws_security_group.allow_rdp.id
+		97  | 
+		98  |   cidr_ipv4   = aws_vpc.example.cidr_block
+		99  |   ip_protocol = -1
+		100 | }
 
 Check: CKV_AWS_23: "Ensure every security groups rule has a description"
 	FAILED for resource: aws_vpc_security_group_egress_rule.allow_all
-	File: /activedirectory.tf:98-103
+	File: /activedirectory.tf:102-107
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
 
-		98  | resource "aws_vpc_security_group_egress_rule" "allow_all" {
-		99  |   security_group_id = aws_security_group.allow_rdp.id
-		100 | 
-		101 |   cidr_ipv4   = "0.0.0.0/0"
-		102 |   ip_protocol = -1
-		103 | }
+		102 | resource "aws_vpc_security_group_egress_rule" "allow_all" {
+		103 |   security_group_id = aws_security_group.allow_rdp.id
+		104 | 
+		105 |   cidr_ipv4   = "0.0.0.0/0"
+		106 |   ip_protocol = -1
+		107 | }
 
 Check: CKV_AWS_88: "EC2 instance should not have public IP."
 	FAILED for resource: aws_instance.ec2tester
-	File: /main.tf:25-46
+	File: /main.tf:25-51
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
 
 		25 | resource "aws_instance" "ec2tester" {
@@ -190,21 +172,26 @@ Check: CKV_AWS_88: "EC2 instance should not have public IP."
 		33 |     http_endpoint = "enabled"
 		34 |     http_tokens   = "required"
 		35 |   }
-		36 |   
-		37 |   # Necessary for free tier eligibility
-		38 |   tenancy = "default"
-		39 | 
-		40 |   # Optional: Add a key pair for SSH access
-		41 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
-		42 | 
-		43 |   tags = {
-		44 |     Name = "aws_instance.ec2tester"
-		45 |   }
-		46 | }
+		36 | 
+		37 |   #fixes another vulnerability for 
+		38 |   root_block_device {
+		39 |     encrypted = true
+		40 |   }
+		41 |   
+		42 |   # Necessary for free tier eligibility
+		43 |   tenancy = "default"
+		44 | 
+		45 |   # Optional: Add a key pair for SSH access
+		46 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
+		47 | 
+		48 |   tags = {
+		49 |     Name = "aws_instance.ec2tester"
+		50 |   }
+		51 | }
 
 Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
 	FAILED for resource: aws_instance.ec2tester
-	File: /main.tf:25-46
+	File: /main.tf:25-51
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
 
 		25 | resource "aws_instance" "ec2tester" {
@@ -218,21 +205,26 @@ Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instance
 		33 |     http_endpoint = "enabled"
 		34 |     http_tokens   = "required"
 		35 |   }
-		36 |   
-		37 |   # Necessary for free tier eligibility
-		38 |   tenancy = "default"
-		39 | 
-		40 |   # Optional: Add a key pair for SSH access
-		41 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
-		42 | 
-		43 |   tags = {
-		44 |     Name = "aws_instance.ec2tester"
-		45 |   }
-		46 | }
+		36 | 
+		37 |   #fixes another vulnerability for 
+		38 |   root_block_device {
+		39 |     encrypted = true
+		40 |   }
+		41 |   
+		42 |   # Necessary for free tier eligibility
+		43 |   tenancy = "default"
+		44 | 
+		45 |   # Optional: Add a key pair for SSH access
+		46 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
+		47 | 
+		48 |   tags = {
+		49 |     Name = "aws_instance.ec2tester"
+		50 |   }
+		51 | }
 
 Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
 	FAILED for resource: aws_instance.ec2tester
-	File: /main.tf:25-46
+	File: /main.tf:25-51
 	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
 
 		25 | resource "aws_instance" "ec2tester" {
@@ -246,76 +238,22 @@ Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
 		33 |     http_endpoint = "enabled"
 		34 |     http_tokens   = "required"
 		35 |   }
-		36 |   
-		37 |   # Necessary for free tier eligibility
-		38 |   tenancy = "default"
-		39 | 
-		40 |   # Optional: Add a key pair for SSH access
-		41 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
-		42 | 
-		43 |   tags = {
-		44 |     Name = "aws_instance.ec2tester"
-		45 |   }
-		46 | }
-
-Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
-	FAILED for resource: aws_instance.ec2tester
-	File: /main.tf:25-46
-	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
-
-		25 | resource "aws_instance" "ec2tester" {
-		26 |   ami           = "ami-0005e0cfe09cc9050"  # Free tier eligible AMI (check for latest)
-		27 |   instance_type = "t2.micro"  # Free tier eligible instance type
-		28 |   subnet_id = aws_subnet.az1-pub.id
-		29 |   associate_public_ip_address = true
-		30 | 
-		31 |   #enables IMDSv2 to fix vulnerability
-		32 |   metadata_options {
-		33 |     http_endpoint = "enabled"
-		34 |     http_tokens   = "required"
-		35 |   }
-		36 |   
-		37 |   # Necessary for free tier eligibility
-		38 |   tenancy = "default"
-		39 | 
-		40 |   # Optional: Add a key pair for SSH access
-		41 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
-		42 | 
-		43 |   tags = {
-		44 |     Name = "aws_instance.ec2tester"
-		45 |   }
-		46 | }
-
-Check: CKV_AWS_155: "Ensure that Workspace user volumes are encrypted"
-	FAILED for resource: aws_workspaces_workspace.example
-	File: /workspace.tf:10-34
-	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-workspace-user-volumes-are-encrypted
-
-		10 | resource "aws_workspaces_workspace" "example" {
-		11 |   directory_id = aws_workspaces_directory.cloudfun.id
-		12 |   bundle_id    = data.aws_workspaces_bundle.value_windows_10.id
-		13 |   user_name    = "Admin"
-		14 | 
-		15 |   root_volume_encryption_enabled = true
-		16 |   user_volume_encryption_enabled = false
-		17 | 
-		18 |   workspace_properties {
-		19 |     compute_type_name                         = "STANDARD"
-		20 |     user_volume_size_gib                      = 50
-		21 |     root_volume_size_gib                      = 80
-		22 |     running_mode                              = "AUTO_STOP"
-		23 |     running_mode_auto_stop_timeout_in_minutes = 60
-		24 |   }
-		25 | 
-		26 |   depends_on = [ 
-		27 |     aws_iam_role.workspaces_default
-		28 |     #aws_workspaces_directory.cloudfun
-		29 |    ]
-		30 | 
-		31 |   tags = {
-		32 |     Name = "aws_workspaces_workspace.example"
-		33 |   }
-		34 | }
+		36 | 
+		37 |   #fixes another vulnerability for 
+		38 |   root_block_device {
+		39 |     encrypted = true
+		40 |   }
+		41 |   
+		42 |   # Necessary for free tier eligibility
+		43 |   tenancy = "default"
+		44 | 
+		45 |   # Optional: Add a key pair for SSH access
+		46 |   key_name = aws_key_pair.deployer.key_name  # Replace with your key pair name
+		47 | 
+		48 |   tags = {
+		49 |     Name = "aws_instance.ec2tester"
+		50 |   }
+		51 | }
 
 Check: CKV_AWS_130: "Ensure VPC subnets do not assign public IP by default"
 	FAILED for resource: aws_subnet.az1-pub
