@@ -13,7 +13,7 @@ resource "aws_workspaces_workspace" "example" {
   user_name    = "Admin"
 
   root_volume_encryption_enabled = true
-  user_volume_encryption_enabled = false
+  user_volume_encryption_enabled = true
 
   workspace_properties {
     compute_type_name                         = "STANDARD"

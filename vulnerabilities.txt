@@ -1,6 +1,6 @@
 terraform scan results:
 
-Passed checks: 50, Failed checks: 16, Skipped checks: 0
+Passed checks: 51, Failed checks: 15, Skipped checks: 0
 
 Check: CKV_AWS_88: "EC2 instance should not have public IP."
 	FAILED for resource: aws_instance.domain_manager
@@ -286,37 +286,6 @@ Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instanc
 		45 |   }
 		46 | }
 
-Check: CKV_AWS_156: "Ensure that Workspace root volumes are encrypted"
-	FAILED for resource: aws_workspaces_workspace.example
-	File: /workspace.tf:10-34
-	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-workspace-root-volumes-are-encrypted
-
-		10 | resource "aws_workspaces_workspace" "example" {
-		11 |   directory_id = aws_workspaces_directory.cloudfun.id
-		12 |   bundle_id    = data.aws_workspaces_bundle.value_windows_10.id
-		13 |   user_name    = "Admin"
-		14 | 
-		15 |   root_volume_encryption_enabled = false
-		16 |   user_volume_encryption_enabled = false
-		17 | 
-		18 |   workspace_properties {
-		19 |     compute_type_name                         = "STANDARD"
-		20 |     user_volume_size_gib                      = 50
-		21 |     root_volume_size_gib                      = 80
-		22 |     running_mode                              = "AUTO_STOP"
-		23 |     running_mode_auto_stop_timeout_in_minutes = 60
-		24 |   }
-		25 | 
-		26 |   depends_on = [ 
-		27 |     aws_iam_role.workspaces_default
-		28 |     #aws_workspaces_directory.cloudfun
-		29 |    ]
-		30 | 
-		31 |   tags = {
-		32 |     Name = "aws_workspaces_workspace.example"
-		33 |   }
-		34 | }
-
 Check: CKV_AWS_155: "Ensure that Workspace user volumes are encrypted"
 	FAILED for resource: aws_workspaces_workspace.example
 	File: /workspace.tf:10-34
@@ -327,7 +296,7 @@ Check: CKV_AWS_155: "Ensure that Workspace user volumes are encrypted"
 		12 |   bundle_id    = data.aws_workspaces_bundle.value_windows_10.id
 		13 |   user_name    = "Admin"
 		14 | 
-		15 |   root_volume_encryption_enabled = false
+		15 |   root_volume_encryption_enabled = true
 		16 |   user_volume_encryption_enabled = false
 		17 | 
 		18 |   workspace_properties {
